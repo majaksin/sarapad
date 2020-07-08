@@ -1,0 +1,16 @@
+{
+  "id": "sarapad",
+  "version": "1.0.0",
+  "name": "여신장판",
+  "author": "shm",
+  "description": "여신님 장판",
+  "preview": "preview.png",
+  "dependencies": {
+    "majsoul_plus": "^2.0.0"
+  },
+  "replace": [
+    "scene/Assets/Resource/tablecloth/tablecloth_default/Table_Dif.jpg",
+    "myres2/tablecloth/tablecloth_default/preview.jpg",
+    "extendRes/items/tablecloth_navy.jpg"
+  ]
+}
