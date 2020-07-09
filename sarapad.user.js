@@ -27,6 +27,31 @@
 
 
     replaceXhrOpen();
+    replaceCodeScript();
+
+    function replaceCodeScript() {
+        let observer = null;
+        observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                const scripts = document.getElementsByTagName('script');
+                for (let i = 0; i < scripts.length; i++) {
+                    const script = scripts[i];
+                    if (script.src && script.src.indexOf('code.js') !== -1) {
+                        script.onload = function () {
+                            replaceLayaLoadImage();
+                            replaceLayaLoadSound();
+                            replaceLayaLoadTtf();
+                        };
+                        observer.disconnect();
+                    }
+                }
+            });
+        });
+        const config = {
+            childList: true
+        };
+        observer.observe(document.body, config);
+    }
 
     function updateUrl(url) {
         const original_url = url;
@@ -48,6 +73,27 @@
         window.XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
             return original_function.call(this, method, updateUrl(url), async, user, password);
         };
+    }
+
+    function replaceLayaLoadImage() {
+        const original_function = Laya.Loader.prototype._loadImage;
+        Laya.Loader.prototype._loadImage = function (url) {
+            return original_function.call(this, updateUrl(url));
+        }
+    }
+
+    function replaceLayaLoadSound() {
+        const original_function = Laya.Loader.prototype._loadSound;
+        Laya.Loader.prototype._loadSound = function (url) {
+            return original_function.call(this, updateUrl(url));
+        }
+    }
+
+    function replaceLayaLoadTtf() {
+        const original_function = Laya.Loader.prototype._loadTTF;
+        Laya.Loader.prototype._loadTTF = function (url) {
+            return original_function.call(this, updateUrl(url));
+        }
     }
 
 })();
